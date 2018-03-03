@@ -32,25 +32,16 @@ public class Config {
 			distMatrix = new int[n][n];
 			for(int i=0; i<n;i++) {
 				for(int j=0; j<n;j++) {
-					int number = reading.nextInt();
-					distMatrix[i][j] = number;
-					//System.out.print(number + " ");
+					distMatrix[i][j] = reading.nextInt();
 				}
-				//System.out.println();
 			}
-			//System.out.println();
 			flowMatrix = new int[n][n];
 			for(int i=0; i<n;i++) {
 				for(int j=0; j<n;j++) {
-					int number = reading.nextInt();
-					flowMatrix[i][j] = number;
-					//System.out.print(number + " ");
+					flowMatrix[i][j] = reading.nextInt();
 				}
-				//System.out.println();
 			}
-			//System.out.println("	Konfiguracja zosta³a wczytana.");
 			reading.close();
-			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
