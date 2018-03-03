@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Genetic algoritm 
+ * Genetic algorithm 
  * @author Bartosz Przydatek
  *
  */
@@ -118,16 +118,16 @@ public class GeneticAlgorithm {
 			newGen = null;
 			initialise();
 			createFile(test);
-			int bestRating = oldGen.tour(GeneticAlgorithm.oldGen.subjects.size()).rating;
+			int bestRating = oldGen.getBestSubject().rating;
 			int avgRating = oldGen.getAvg();
-			int worstRating = oldGen.chooseWorst().rating;
+			int worstRating = oldGen.getWorstSubject().rating;
 			saveGen(1 + ";" + bestRating*bestRating + ";" + avgRating*avgRating + ";" + worstRating*worstRating, test);
 			for(int popAmount = 2; popAmount<=gen; popAmount++) {
 				newGen = new Generation();
 				while(newGen.subjects.size() < pop_size) {
 					Subject parent1 = oldGen.tour(Tour);
 					Subject parent2 = oldGen.tour(Tour);
-					if(generator.nextDouble() > Px) {
+					if(generator.nextDouble() < Px) {
 						Subject[] childs = parent1.crossover(parent2);
 						Subject child1 = childs[0];
 						Subject child2 = childs[1];
@@ -154,9 +154,9 @@ public class GeneticAlgorithm {
 						newGen.add(parent2);
 					}
 				}
-				bestRating = newGen.tour(popAmount).rating;
+				bestRating = newGen.getBestSubject().rating;
 				avgRating = newGen.getAvg();
-				worstRating = newGen.chooseWorst().rating;
+				worstRating = newGen.getWorstSubject().rating;
 				saveGen(popAmount + ";" + bestRating*bestRating + ";" + avgRating*avgRating + ";" + worstRating*worstRating, test);
 				oldGen = newGen;
 			}

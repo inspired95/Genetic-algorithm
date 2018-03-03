@@ -69,13 +69,30 @@ public class Generation {
 	 * Select the worst subject from all generation
 	 * @return The worst subject. Subject with the biggest rating.
 	 */
-	public Subject chooseWorst() {
+	public Subject getWorstSubject() {
 		
 		Subject someSubject = subjects.get(0);
 		
 		for(int i=0;i<subjects.size();i++) {
 			Subject candidate = subjects.get(i);
 			if(candidate.rating > someSubject.rating) {
+				someSubject = candidate;
+			}
+		}
+		return someSubject;
+	}
+	
+	/**
+	 * Select the best subject from all generation
+	 * @return The worst subject. Subject with the biggest rating.
+	 */
+	public Subject getBestSubject() {
+		
+		Subject someSubject = subjects.get(0);
+		
+		for(int i=0;i<subjects.size();i++) {
+			Subject candidate = subjects.get(i);
+			if(candidate.rating < someSubject.rating) {
 				someSubject = candidate;
 			}
 		}
