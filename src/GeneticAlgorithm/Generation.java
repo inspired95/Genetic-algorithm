@@ -42,7 +42,7 @@ public class Generation {
 	}
 	
 	/**
-	 * Execute tournament selected players from generation
+	 * Execute tournament for selected amount of players
 	 * @param numOfPlayers Numbers of players elected from generation
 	 * @return Best player from tournament. Player with the smallest rating.
 	 */
@@ -66,7 +66,7 @@ public class Generation {
 	}
 	
 	/**
-	 * Select the worst subject from all generation
+	 * Select the worst subject of generation
 	 * @return The worst subject. Subject with the biggest rating.
 	 */
 	public Subject getWorstSubject() {
@@ -83,8 +83,8 @@ public class Generation {
 	}
 	
 	/**
-	 * Select the best subject from all generation
-	 * @return The worst subject. Subject with the biggest rating.
+	 * Select the best subject of generation
+	 * @return The best subject. Subject with the smallest rating.
 	 */
 	public Subject getBestSubject() {
 		
@@ -113,7 +113,7 @@ public class Generation {
 	}
 	
 	/**
-	 * Show genotypes of all subjects from generation
+	 * Show genotypes of subjects from generation
 	 */
 	public void showGen() {
 		for(int i = 0; i < subjects.size(); i++) {

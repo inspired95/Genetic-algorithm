@@ -34,7 +34,7 @@ public class Subject {
 	}
 	
 	/**
-	 * Calculate rating of given subject and set this
+	 * Calculate rating of subject and set this
 	 */
 	public void calculate(){
 		int result = 0;
@@ -47,7 +47,7 @@ public class Subject {
 		}
 	
 	/**
-	 * Execute mutation of given subject
+	 * Execute mutation procedure
 	 */
 	public void mutation() {
 		for(int i = 0; i < genotype.size();i++) {
@@ -63,7 +63,7 @@ public class Subject {
 	}
 	
 	/**
-	 * Execute crossover of given subject with other subject
+	 * Execute crossover of subject with other subject
 	 * @param parent2 other subject to crossover
 	 * @return Array with two subjects where each emerging from parents
 	 */
@@ -86,7 +86,7 @@ public class Subject {
 	}
 	
 	/**
-	 * Firstly, check correctness of genotype. If this's wrong execute repair.
+	 * Check correctness of genotype. If this's wrong execute repair.
 	 */
 	public void checkAndRepair() {
 		ArrayList<Integer> kit = new ArrayList<Integer>();

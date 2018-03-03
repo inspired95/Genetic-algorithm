@@ -15,7 +15,7 @@ public class GeneticAlgorithm {
 	static long timeIn;
 	static long timeOut;
 	
-	//default configuration of tests
+	//default configuration for tests
 	static String fileConfigName = "had12";
 	static int pop_size = 100;
 	static int gen = 100;
@@ -32,7 +32,7 @@ public class GeneticAlgorithm {
 	static Random generator = new Random();
 	
 	/**
-	 * Main void
+	 * Main method
 	 * @param args Program works without extra parameters
 	 */
 	public static void main(String[] args) {
@@ -41,9 +41,9 @@ public class GeneticAlgorithm {
 		
 		
 		execute("had12", 100, 100, 0.01, 0.7, 5, 5);
-		execute("had14", 100, 100, 0.01, 0.7, 5, 5);
-		execute("had16", 100, 100, 0.01, 0.7, 5, 5);
-		execute("had18", 100, 100, 0.01, 0.7, 5, 5);
+		execute("had14", 100, 100, 0.01, 0.7, 5, 4);
+		execute("had16", 100, 100, 0.01, 0.7, 5, 6);
+		execute("had18", 100, 100, 0.01, 0.7, 5, 3);
 		execute("had20", 100, 100, 0.01, 0.7, 5, 5);
 		
 		timeOut = System.currentTimeMillis();
@@ -51,7 +51,7 @@ public class GeneticAlgorithm {
 	}
 	
 	/**
-	 * Load valid file with configuration and generate new generation
+	 * Load valid file with configuration and generate first generation
 	 */
 	public static void initialise() {
 		@SuppressWarnings("unused")
@@ -60,8 +60,8 @@ public class GeneticAlgorithm {
 	}
 	
 	/**
-	 * Create appropriate file for new test
-	 * @param numOfCurrentTest Number of current test for appropriate file
+	 * Create file for new test
+	 * @param numOfCurrentTest Number of current test for file
 	 */
 	public static void createFile(int numOfCurrentTest) {
 		
@@ -76,8 +76,8 @@ public class GeneticAlgorithm {
 	}
 	
 	/**
-	 * Append line with generation results to valid file
-	 * @param line String with generation results 
+	 * Append line with result of generation to valid file
+	 * @param line String with generation's result
 	 * @param numberOfTest Number of test need to enter valid file
 	 */
 	public static void saveGen(String line, int numberOfTest) {
@@ -96,12 +96,12 @@ public class GeneticAlgorithm {
 	/**
 	 * Execute procedure of algorithm for specify parameters
 	 * @param fileConfigName File name with configuration
-	 * @param pop_size Size of each new generation
-	 * @param gen Amount of generations for generate
+	 * @param pop_size Size of generations
+	 * @param gen Amount of generations to generate
 	 * @param Pm Mutation probability
 	 * @param Px Crossover probability
-	 * @param Tour Amount of players in each tour
-	 * @param numberOfTests Amount of tests
+	 * @param Tour Amount of players of each tournament
+	 * @param numberOfTests Amount of tests to execute
 	 */
 	public static void execute(String fileConfigName, int pop_size, int gen, double Pm, Double Px, int Tour, int numberOfTests) {
 		GeneticAlgorithm.fileConfigName = fileConfigName;
