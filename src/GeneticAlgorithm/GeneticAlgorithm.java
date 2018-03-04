@@ -95,6 +95,7 @@ public class GeneticAlgorithm {
 	
 	/**
 	 * Execute procedure of genetic algorithm for specify parameters
+	 * Save result of each generation as (the best subject rating; average value of ratings of single generation;the worst subject rating)
 	 * @param fileConfigName File name with configuration
 	 * @param pop_size Size of generations
 	 * @param gen Amount of generations to generate
@@ -160,7 +161,6 @@ public class GeneticAlgorithm {
 				saveGen(popAmount + ";" + bestRating + ";" + avgRating + ";" + worstRating, test);
 				oldGen = newGen;
 			}
-			System.out.println();
 		}
 	}
 	

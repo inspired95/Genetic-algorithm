@@ -1,5 +1,6 @@
 package GeneticAlgorithm;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -110,5 +111,15 @@ public class Subject {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Create string with genotype and rating
+	 * @return String with genotype and rating
+	 */
+	public String toString() {
+		String subjectString = null;
+		subjectString = Arrays.toString((genotype.toArray())) + " " + rating + "\n";
+		return subjectString;
 	}
 }

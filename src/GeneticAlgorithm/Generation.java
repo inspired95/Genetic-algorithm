@@ -1,6 +1,5 @@
 package GeneticAlgorithm;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -113,11 +112,15 @@ public class Generation {
 	}
 	
 	/**
-	 * Show genotypes of subjects from generation
+	 * Create string with all subjects genotypes and their ratings
+	 * @return String with all subjects genotypes and their ratings
 	 */
-	public void showGen() {
+	public String toString() {
+		StringBuilder subjectsGenotypes = new StringBuilder();;
 		for(int i = 0; i < subjects.size(); i++) {
-			System.out.println(Arrays.toString(subjects.get(i).genotype.toArray()) + "       " + subjects.get(i).rating);
+			String subject = subjects.get(i).toString();
+			subjectsGenotypes.append(subject);
 		}
+		return subjectsGenotypes.toString();
 	}
 }
