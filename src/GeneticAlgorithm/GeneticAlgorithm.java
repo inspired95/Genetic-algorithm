@@ -94,7 +94,7 @@ public class GeneticAlgorithm {
 	}
 	
 	/**
-	 * Execute procedure of algorithm for specify parameters
+	 * Execute procedure of genetic algorithm for specify parameters
 	 * @param fileConfigName File name with configuration
 	 * @param pop_size Size of generations
 	 * @param gen Amount of generations to generate
@@ -118,10 +118,10 @@ public class GeneticAlgorithm {
 			newGen = null;
 			initialise();
 			createFile(test);
-			int bestRating = oldGen.getBestSubject().rating;
-			int avgRating = oldGen.getAvg();
-			int worstRating = oldGen.getWorstSubject().rating;
-			saveGen(1 + ";" + bestRating*bestRating + ";" + avgRating*avgRating + ";" + worstRating*worstRating, test);
+			int bestRating = (int) Math.pow(oldGen.getBestSubject().rating, 2);
+			int avgRating = (int)Math.pow(oldGen.getAvg(), 2);
+			int worstRating = (int)Math.pow(oldGen.getWorstSubject().rating, 2) ;
+			saveGen(1 + ";" + bestRating + ";" + avgRating + ";" + worstRating, test);
 			for(int popAmount = 2; popAmount<=gen; popAmount++) {
 				newGen = new Generation();
 				while(newGen.subjects.size() < pop_size) {
@@ -154,13 +154,31 @@ public class GeneticAlgorithm {
 						newGen.add(parent2);
 					}
 				}
-				bestRating = newGen.getBestSubject().rating;
-				avgRating = newGen.getAvg();
-				worstRating = newGen.getWorstSubject().rating;
-				saveGen(popAmount + ";" + bestRating*bestRating + ";" + avgRating*avgRating + ";" + worstRating*worstRating, test);
+				bestRating = (int) Math.pow(newGen.getBestSubject().rating, 2);
+				avgRating = (int)Math.pow(newGen.getAvg(), 2);
+				worstRating = (int)Math.pow(newGen.getWorstSubject().rating, 2) ;
+				saveGen(popAmount + ";" + bestRating + ";" + avgRating + ";" + worstRating, test);
 				oldGen = newGen;
 			}
 			System.out.println();
 		}
-	}	
+	}
+	
+	/*
+	public void nongeneticAlgorithm(String fileConfigName, int pop_size, int gen, double Pm, Double Px){
+		System.out.println("Executing non-genetic algorithm for configuration " + fileConfigName);
+		oldGen = null;
+		GeneticAlgorithm.fileConfigName = fileConfigName;
+		GeneticAlgorithm.pop_size = pop_size;
+		GeneticAlgorithm.gen = gen;
+		GeneticAlgorithm.Pm = Pm;
+		GeneticAlgorithm.Px = Px;
+		initialise();
+		createFile(1);
+		int bestRating = oldGen.getBestSubject().rating;
+		int avgRating = oldGen.getAvg();
+		int worstRating = oldGen.getWorstSubject().rating;
+		
+	}
+	*/
 }
