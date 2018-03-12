@@ -1,10 +1,7 @@
 package GeneticAlgorithm;
+
+import java.util.Collections;
 import java.util.Random;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * Genetic algorithm 
@@ -39,15 +36,10 @@ public class GeneticAlgorithm {
 		timeIn = System.currentTimeMillis();
 		System.out.println("Starting the program");
 		
-		
-		execute("had12", 100, 100, 0.01, 0.7, 5, 5);
-		execute("had14", 100, 100, 0.01, 0.7, 5, 4);
-		execute("had16", 100, 100, 0.01, 0.7, 5, 6);
-		execute("had18", 100, 100, 0.01, 0.7, 5, 3);
-		execute("had20", 100, 100, 0.01, 0.7, 5, 5);
-		
+		GA("had20", 100, 100, 0.02, 0.7, 5, 1, "Roulette");
+
 		timeOut = System.currentTimeMillis();
-		System.out.println("Execution time : " + (timeOut-timeIn) + " ms");
+		System.out.println("Execution time : " + (timeOut-timeIn)/1000 + " s");
 	}
 	
 	/**
@@ -60,40 +52,6 @@ public class GeneticAlgorithm {
 	}
 	
 	/**
-	 * Create file for new test
-	 * @param numOfCurrentTest Number of current test for file
-	 */
-	public static void createFile(int numOfCurrentTest) {
-		
-		try {
-			PrintWriter writer;
-			writer = new PrintWriter(fileConfigName + "RESULT"+numOfCurrentTest+".dat");
-			writer.print("");
-			writer.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Append line with result of generation to valid file
-	 * @param line String with generation's result
-	 * @param numberOfTest Number of test need to enter valid file
-	 */
-	public static void saveGen(String line, int numberOfTest) {
-		try(
-				FileWriter fw = new FileWriter(fileConfigName + "RESULT"+numberOfTest+".dat", true);
-			    BufferedWriter bw = new BufferedWriter(fw);
-			    PrintWriter out = new PrintWriter(bw))
-			{
-			    out.println(line);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		
-	}
-	
-	/**
 	 * Execute procedure of genetic algorithm for specify parameters
 	 * Save result of each generation as (the best subject rating; average value of ratings of single generation;the worst subject rating)
 	 * @param fileConfigName File name with configuration
@@ -103,31 +61,40 @@ public class GeneticAlgorithm {
 	 * @param Px Crossover probability
 	 * @param Tour Amount of players of each tournament
 	 * @param numberOfTests Amount of tests to execute
+	 * @param selectionType String like "Tour" to use tournament selection method or "Rulette" to use rulette selection method
 	 */
-	public static void execute(String fileConfigName, int pop_size, int gen, double Pm, Double Px, int Tour, int numberOfTests) {
+	public static void GA(String fileConfigName, int pop_size, int gen, double Pm, double Px, int Tour, int numberOfTests, String selectionType) {
 		GeneticAlgorithm.fileConfigName = fileConfigName;
 		GeneticAlgorithm.pop_size = pop_size;
 		GeneticAlgorithm.gen = gen;
 		GeneticAlgorithm.Pm = Pm;
 		GeneticAlgorithm.Px = Px;
 		GeneticAlgorithm.Tour = Tour;
-		
+		System.out.println("Executing " + numberOfTests + " tests of GA for " + fileConfigName + ".dat");
+
 		
 		for(int test = 1; test <= numberOfTests; test++) {
-			System.out.println("Executing " + test + ". test for configuration " + fileConfigName);
 			oldGen = null;
 			newGen = null;
 			initialise();
-			createFile(test);
-			int bestRating = (int) Math.pow(oldGen.getBestSubject().rating, 2);
-			int avgRating = (int)Math.pow(oldGen.getAvg(), 2);
-			int worstRating = (int)Math.pow(oldGen.getWorstSubject().rating, 2) ;
-			saveGen(1 + ";" + bestRating + ";" + avgRating + ";" + worstRating, test);
+			SaveToFile.createFile(test, "Genetic");
+			int bestRating = (int) Math.pow(oldGen.getBestSubject().rating, 1);
+			int avgRating = (int)Math.pow(oldGen.getAvg(), 1);
+			int worstRating = (int)Math.pow(oldGen.getWorstSubject().rating, 1) ;
+			SaveToFile.saveGen(1 + ";" + bestRating + ";" + avgRating + ";" + worstRating, test, "Genetic");
 			for(int popAmount = 2; popAmount<=gen; popAmount++) {
 				newGen = new Generation();
 				while(newGen.subjects.size() < pop_size) {
-					Subject parent1 = oldGen.tour(Tour);
-					Subject parent2 = oldGen.tour(Tour);
+					Subject parent1 = new Subject();
+					Subject parent2 = new Subject();
+					if(selectionType.equals("Tour")) {
+						parent1 = oldGen.tour(Tour);
+						parent2 = oldGen.tour(Tour);
+					}else if(selectionType.equals("Roulette")) {
+						parent1 = oldGen.roulette();
+						parent2 = oldGen.roulette();
+					}
+
 					if(generator.nextDouble() < Px) {
 						Subject[] childs = parent1.crossover(parent2);
 						Subject child1 = childs[0];
@@ -155,30 +122,69 @@ public class GeneticAlgorithm {
 						newGen.add(parent2);
 					}
 				}
-				bestRating = (int) Math.pow(newGen.getBestSubject().rating, 2);
-				avgRating = (int)Math.pow(newGen.getAvg(), 2);
-				worstRating = (int)Math.pow(newGen.getWorstSubject().rating, 2) ;
-				saveGen(popAmount + ";" + bestRating + ";" + avgRating + ";" + worstRating, test);
+				bestRating = (int) Math.pow(newGen.getBestSubject().rating, 1);
+				avgRating = (int)Math.pow(newGen.getAvg(), 1);
+				worstRating = (int)Math.pow(newGen.getWorstSubject().rating, 1) ;
+				SaveToFile.saveGen(popAmount + ";" + bestRating + ";" + avgRating + ";" + worstRating, test, "Genetic");
 				oldGen = newGen;
 			}
 		}
 	}
 	
-	/*
-	public void nongeneticAlgorithm(String fileConfigName, int pop_size, int gen, double Pm, Double Px){
-		System.out.println("Executing non-genetic algorithm for configuration " + fileConfigName);
-		oldGen = null;
+	/**
+	 * Execute greedy algorithm for configuration file and save each result to file
+	 * @param fileConfigName File with configuration "had__.dat"
+	 * @param amountOfTests Amount of tests to execute
+	 */
+	public static void greedy(String fileConfigName, int amountOfTests){
+		System.out.println("Executing " + amountOfTests + " tests of greedy algorithm for " + fileConfigName + ".dat");
 		GeneticAlgorithm.fileConfigName = fileConfigName;
-		GeneticAlgorithm.pop_size = pop_size;
-		GeneticAlgorithm.gen = gen;
-		GeneticAlgorithm.Pm = Pm;
-		GeneticAlgorithm.Px = Px;
+		SaveToFile.createFile(1, "Greedy");
+		for(int test = 1; test <= amountOfTests; test++) {
+			Subject subject = new Subject();
+	        for(int i = 1; i <= Config.n; i++) {
+	            subject.genotype.add(i);
+	        }
+	        Collections.shuffle(subject.genotype);
+	        subject.calculate();
+	       
+	        Subject tmpSubject = new Subject();
+	       
+	        for(int i = 0; i<subject.genotype.size()-1; i++) {
+	            for(int j=0; j < subject.genotype.size(); j++) {
+	                tmpSubject.genotype.add(subject.genotype.get(j));
+	            }
+	           
+	            Collections.swap(tmpSubject.genotype, i, i+1);
+	            tmpSubject.calculate();
+	 
+	           
+	            if(tmpSubject.rating < subject.rating) {
+	                subject.genotype.clear();
+	                for(int j = 0; j< tmpSubject.genotype.size(); j++) {
+	                    subject.genotype.add(tmpSubject.genotype.get(j));
+	                }
+	                subject.rating = tmpSubject.rating;
+	                i=0;
+	            }
+	            tmpSubject.genotype.clear();
+	        }
+	        SaveToFile.saveGen(""+subject.rating, 1, "Greedy");
+		}
+        
+    }
+	
+	/**
+	 * Generate random population for configuration file and save result as "average value and standard deviation"
+	 * @param fileConfigName File with configuration "had__.dat"
+	 * @param pop_size Population size to generate
+	 */
+	public static void randomInit(String fileConfigName, int pop_size) {
+		System.out.println("Executing random initialization for " + fileConfigName + ".dat file" );
+		GeneticAlgorithm.fileConfigName = fileConfigName;
 		initialise();
-		createFile(1);
-		int bestRating = oldGen.getBestSubject().rating;
-		int avgRating = oldGen.getAvg();
-		int worstRating = oldGen.getWorstSubject().rating;
-		
+		SaveToFile.createFile(1, "Random");
+		Generation generation = new Generation(pop_size, Config.n);
+		SaveToFile.saveGen(""+generation.getAvg() + "   " + generation.getSD() , 1, "Random");
 	}
-	*/
 }

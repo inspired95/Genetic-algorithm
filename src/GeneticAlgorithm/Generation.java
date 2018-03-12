@@ -2,6 +2,7 @@ package GeneticAlgorithm;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 /**
  * ArrayList of subjects.
  * @author Bartosz Przydatek
@@ -65,6 +66,29 @@ public class Generation {
 	}
 	
 	/**
+	 * Execute selection by Roulette method
+	 * @return Selected subject
+	 */
+	public Subject roulette() {
+		double totalSum = 0;
+		for(int i = 0; i < subjects.size(); i++){
+            totalSum += 1000/subjects.get(i).rating;
+        }
+		
+		double randomChoice = GeneticAlgorithm.generator.nextDouble() * totalSum;
+				
+		double sum = 0;
+		
+		for(int i = 0; i < subjects.size(); i++) {
+			sum += 1000/subjects.get(i).rating;
+			if(sum > randomChoice) {
+				return subjects.get(i);
+			}
+		}
+		return new Subject();
+	}
+	
+	/**
 	 * Select the worst subject of generation
 	 * @return The worst subject. Subject with the biggest rating.
 	 */
@@ -109,6 +133,15 @@ public class Generation {
 		}
 		sumOfRatings = (int) sumOfRatings/subjects.size();
 		return sumOfRatings;
+	}
+	
+	public int getSD() {
+		int AVG = getAvg();
+		int sum = 0;
+		for(int i =0; i < subjects.size(); i++) {
+			sum += Math.pow(subjects.get(i).rating-AVG,2);
+		}
+		return (int)Math.sqrt(sum/subjects.size());
 	}
 	
 	/**
