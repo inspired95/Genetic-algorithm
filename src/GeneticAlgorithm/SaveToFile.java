@@ -6,9 +6,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Methods to create or append line to given files
+ * @author Bartosz Przydatek
+ *
+ */
 public class SaveToFile {
 	/**
-	 * Create file for new test
+	 * Create file for given test and type
 	 * @param numOfCurrentTest Number of current test for file
 	 * @param type Type of using algoritm. Need to new file name
 	 */
@@ -25,7 +30,7 @@ public class SaveToFile {
 	}
 	
 	/**
-	 * Append line with result of generation to valid file
+	 * Append line with result to valid file
 	 * @param line String with generation's result
 	 * @param numberOfTest Number of test need to enter valid file
 	 * @param type Type of use algorithm. Need to select file where line will append

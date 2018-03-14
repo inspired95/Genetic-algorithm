@@ -1,6 +1,5 @@
 package GeneticAlgorithm;
 
-import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -36,7 +35,7 @@ public class GeneticAlgorithm {
 		timeIn = System.currentTimeMillis();
 		System.out.println("Starting the program");
 		
-		GA("had20", 100, 100, 0.02, 0.7, 5, 1, "Roulette");
+		GA("had20", 100, 100000, 0.02, 0.7, 1, 1, "Tour");
 
 		timeOut = System.currentTimeMillis();
 		System.out.println("Execution time : " + (timeOut-timeIn)/1000 + " s");
@@ -129,62 +128,5 @@ public class GeneticAlgorithm {
 				oldGen = newGen;
 			}
 		}
-	}
-	
-	/**
-	 * Execute greedy algorithm for configuration file and save each result to file
-	 * @param fileConfigName File with configuration "had__.dat"
-	 * @param amountOfTests Amount of tests to execute
-	 */
-	public static void greedy(String fileConfigName, int amountOfTests){
-		System.out.println("Executing " + amountOfTests + " tests of greedy algorithm for " + fileConfigName + ".dat");
-		GeneticAlgorithm.fileConfigName = fileConfigName;
-		SaveToFile.createFile(1, "Greedy");
-		for(int test = 1; test <= amountOfTests; test++) {
-			Subject subject = new Subject();
-	        for(int i = 1; i <= Config.n; i++) {
-	            subject.genotype.add(i);
-	        }
-	        Collections.shuffle(subject.genotype);
-	        subject.calculate();
-	       
-	        Subject tmpSubject = new Subject();
-	       
-	        for(int i = 0; i<subject.genotype.size()-1; i++) {
-	            for(int j=0; j < subject.genotype.size(); j++) {
-	                tmpSubject.genotype.add(subject.genotype.get(j));
-	            }
-	           
-	            Collections.swap(tmpSubject.genotype, i, i+1);
-	            tmpSubject.calculate();
-	 
-	           
-	            if(tmpSubject.rating < subject.rating) {
-	                subject.genotype.clear();
-	                for(int j = 0; j< tmpSubject.genotype.size(); j++) {
-	                    subject.genotype.add(tmpSubject.genotype.get(j));
-	                }
-	                subject.rating = tmpSubject.rating;
-	                i=0;
-	            }
-	            tmpSubject.genotype.clear();
-	        }
-	        SaveToFile.saveGen(""+subject.rating, 1, "Greedy");
-		}
-        
-    }
-	
-	/**
-	 * Generate random population for configuration file and save result as "average value and standard deviation"
-	 * @param fileConfigName File with configuration "had__.dat"
-	 * @param pop_size Population size to generate
-	 */
-	public static void randomInit(String fileConfigName, int pop_size) {
-		System.out.println("Executing random initialization for " + fileConfigName + ".dat file" );
-		GeneticAlgorithm.fileConfigName = fileConfigName;
-		initialise();
-		SaveToFile.createFile(1, "Random");
-		Generation generation = new Generation(pop_size, Config.n);
-		SaveToFile.saveGen(""+generation.getAvg() + "   " + generation.getSD() , 1, "Random");
 	}
 }
